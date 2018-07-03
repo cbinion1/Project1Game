@@ -1,3 +1,63 @@
-* {
-	
+body {
+	background-color: rgb(114,7,7);
 }
+.btn {
+	font-family: 'Creepster', cursive;
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+.game-screen {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	width: 60%;
+	height: 60%;
+	border-radius: 10%;
+	border: 15px solid black;
+}
+.description {
+	text-align: center;
+	font-family: 'Nosifer', cursive;
+	color: black;
+}
+.progress {
+	transform-origin: 0% 100%;
+	transform: translate(30px,0px) rotate(-90deg);
+	height: 30px;
+	width: 50%;
+	align-self: left;
+	margin-left: 50px;
+	margin-top: 10px;
+}
+.description {
+	border: 2px solid black;
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+	height: 60%;
+	border-radius: 10%;
+}
+#survival-timer {
+	background-color: black;
+	color: white;
+	text-align: center;
+	width: 10%;
+}
+.survival-timer {
+	align-content: right;
+	display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
