@@ -1,9 +1,19 @@
+* {
+	padding: 0px;
+
+}
+
 body {
-	background-color: rgb(114,7,7);
+	background-color: rgb(114,7,7,0.5);
+	background-image: url(../images/outside.jpg);
+	height: 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .btn {
 	font-family: 'Creepster', cursive;
-	width: 70%;
+	width: 30%;
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
@@ -21,7 +31,7 @@ body {
 .description {
 	text-align: center;
 	font-family: 'Nosifer', cursive;
-	color: black;
+	color: white;
 }
 .progress {
 	transform-origin: 0% 100%;
@@ -50,9 +60,28 @@ body {
 	align-content: right;
 	display: block;
 }
-
-
-
+.time-left {
+	color: white;
+}
+#fight {
+	font-family: 'Creepster', cursive;
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+#run {
+	font-family: 'Creepster', cursive;
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+footer {
+	text-align: center;
+	font-size: xx-small;
+	color: white;
+}
 
 
 
