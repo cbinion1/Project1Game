@@ -82,8 +82,16 @@ footer {
 	font-size: xx-small;
 	color: white;
 }
-
-
+h1 {
+	font-family: 'Creepster', cursive;
+	text-shadow: : 2px 2px rgb(114,7,7,0.5);
+	color: white;
+	text-align: center;
+}
+.timer-clock {
+	width: 15%;
+	position: absolute;
+}
 
 
 
