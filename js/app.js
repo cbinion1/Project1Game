@@ -11,8 +11,8 @@
 //(insert monster name here) takes out restraining order against you allowing the police to pummel you senseless
 //for being within 50 yards of (monster name).
 //
-//(insert monster here) attempts to kick you in the privates, but re-thinks the idea and challenges you to a 
-//dance-ff wherein you lose.
+//(insert monster here) attempts to cut out your spleen, but re-thinks the idea and challenges you to a 
+//dance-off wherein you lose.
 //
 //You come across a (monster name) and accidentally insult his pokemon deck.  His resulting nerd rage causes 
 //your limbs to fly off randomly until you're reduced to a pile of bloody chunks.  (Monster name) calls you a 
@@ -54,12 +54,12 @@ $("#start-game-button").on("click", () => {
 	$(".buttons").append("<button type='button' id='main-hall' class='btn btn-dark btn-lg btn-block'>Main Hall</button>");
 	foyer();
 	startTimer();
-	const playerOne = new playerChar(10, 2, 2);
+	
 
 $("#fight").on("click", () => {
 	console.log("Fight! Fight!")
-	playerOne.attack();
-	zombieOne.attack();
+	playerChar.attack();
+	monster.attack();
 	console.log(playerOne);
 	console.log(zombieOne);
 });
@@ -70,6 +70,9 @@ $("#run").on("click", () => {
 $("#main-hall").on("click", () => {
 	mainHallway();
 	});
+$("#den").on("click", () => {
+	den();
+})
 });
 //----------------------------------------------------------------------
 //--------------------Class\Method Creation-----------------------------
@@ -80,13 +83,12 @@ class monster {
 		this.resistance = resistance;
 	}
 	attack(){
-		if (this.resistance <= playerChar.damage) {
-			this.health -= 2
-		} else if (this.resistance > playerChar.damage) {
-			this.health--
+		if (this.damage >= playerChar.resistance) {
+			playerChar.health -= 2
+		} else if (this.damage < playerChar.resistance) {
+			playerChar.health--
 		}
 	}
-
 }
 
 class playerChar {
@@ -96,15 +98,19 @@ class playerChar {
 		this.resistance = resistance;
 	}
 	attack(){
-		if (this.resistance <= monster.damage) {
-			this.health -= 2
-		} else if (this.resistance > monster.damage) {
-			this.health--
+		if (this.damage >= monster.resistance) {
+			monster.health -= 2
+		} else if (this.damage < monster.resistance) {
+			monster.health--
 		}
 	}
 }
 
-const zombieOne = new monster(6, 1, 1);
+const playerOne = new playerChar(10, 2, 2);
+// const zombieOne = new monster(6, 1, 1);
+// const zombieDog = new monster(2, 1, 1);
+// const yeti = new monster(20, 10, 10);
+
 //--------------------------------------------------------------------
 //-------------------------------Health Bar---------------------------
 
@@ -147,9 +153,17 @@ const foyer = () => {
 const mainHallway = () => {
 	$(".game-screen").attr('src', 'images/mainfloorhall.jpg');
 	$(".description").text("You step into a large hall, at the end of which is a grand staircase.  Before you can see any more, a hideous zombie shuffles up to you asking for loose change!");
-	
+	$(".main-hall").replaceWith("<button type='button' id='main-stairs' class='btn btn-dark btn-lg btn-block'>Main Floor Staircase</button>");
+	$(".buttons").append("<button type='button' id='den' class='btn btn-light btn-lg btn-block'>Den</button>");
+	$(".buttons").append("<button type='button' id='lounge' class='btn btn-warning btn-lg btn-block'>Lounge</button>");
+	const zombieOne = new monster(6, 1, 1);
 }
 
+const den = () => {
+	$(".game-screen").attr('src', 'images/den.jpg');
+	$(".description").text("You jump out of the dangrous hallway into what appears to be a den.  It looks nice... well, it looked nice at one point.  Before the monsters and blood.");
+
+}	
 
 
 
