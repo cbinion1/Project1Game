@@ -6,23 +6,23 @@ let game = {};
 //---------------------Event Fricken' Do'ers!---------------------------
 $("#start-game-button").on("click", () => {
 	$(".btn").replaceWith("<button type='button' id='main-hall' class='btn btn-dark btn-lg btn-block'>Main Hall</button>");
-	foyer();
-	startTimer();
 	game.playerOne = new character(10, 2, 2);
-	console.log(game.playerOne);
-	
+	foyer();
+	startTimer(1);
 
 $("#fight").on("click", () => {
 	console.log("Fight! Fight!")
 	game.playerOne.attack();
+	game.playerOne.death();
 	game.zombie.attack();
+	game.zombie.death();
 	randoPlayAttack();
 	console.log(game.playerOne);
 	console.log(game.zombie);
 	});
 $("#run").on("click", () => {
 	console.log("Run away!!!")
-	foyer();
+	returnFoyer();
 	});
 $("#main-hall").on("click", () => {
 	mainHallway();
@@ -48,58 +48,103 @@ class character {
 		} if (this.damage < this.resistance) {
 			this.health--
 		} if (this.health <= 0) {
-			alert("You have slain the " + this + "Good for you!")
+			console.log("You have killed or have been killed...")
+		}
+	}
+	death(){
+		if (this.health <= 0){
+			endGame();
 		}
 	}
 }
 
 //const game.playerOne = new character(10, 2, 2);
 //const game.zombie = new character(6, 1, 1);
-// const game.zombieDog = new character(2, 1, 1);
-// const game.yeti = new character(20, 10, 10);
+//const game.zombieDog = new character(2, 1, 1);
+//const game.yeti = new character(20, 10, 10);
 //--------------------------------------------------------------------
 //-------------------------------Health Bar---------------------------
 
 
-// $('#health-bar').css("width", (playerChar.health * 10)+ "%");
+//$('#health-bar').css("width", (playerChar.health * 10)+ "%");
 
 
 //--------------------------------------------------------------------
 //---------------------------Countdown Timer------------------------------
-document.getElementById('survival-timer').innerHTML =
-  10 + ":" + 00;
+// document.getElementById('survival-timer').innerHTML =
+//   1 + ":" + 00;
 
 
-function startTimer() {
-  var presentTime = document.getElementById('survival-timer').innerHTML;
-  var timeArray = presentTime.split(/[:]+/);
-  var m = timeArray[0];
-  var s = checkSecond((timeArray[1] - 1));
-  if(s==59){m=m-1}
-  if(m===0){console.log('timer completed')}
+// function startTimer() {
+//   var presentTime = document.getElementById('survival-timer').innerHTML;
+//   var timeArray = presentTime.split(/[:]+/);
+//   var m = timeArray[0];
+//   var s = checkSecond((timeArray[1] - 1));
+//   if(s==59){m=m-1}
+//   if(m===0){console.log("Time is running out!")};
+// 	if(m===0 && s===0){endGame()};
+
   
-  document.getElementById('survival-timer').innerHTML =
-    m + ":" + s;
-  setTimeout(startTimer, 1000);
-}
+//   document.getElementById('survival-timer').innerHTML =
+//     m + ":" + s;
+//   setTimeout(startTimer, 1000);
+// }
 
-function checkSecond(sec) {
-  if (sec < 10 && sec >= 0) {sec = "0" + sec}; 
-  if (sec < 0) {sec = "59"};
-  return sec;
+// function checkSecond(sec) {
+//   if (sec < 10 && sec >= 0) {sec = "0" + sec}; 
+//   if (sec < 0) {sec = "59"};
+//   return sec;
+// }
+
+var timeoutHandle;
+function startTimer(minutes) {
+    var seconds = 60;
+    var mins = minutes
+    function tick() {
+        var counter = document.getElementById("survival-timer");
+        var current_minutes = mins-1
+        seconds--;
+        counter.innerHTML =
+        current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+        if( seconds > 0 ) {
+            timeoutHandle=setTimeout(tick, 1000);
+        } else {
+
+            if(mins > 1){
+
+               setTimeout(function () { countdown(mins - 1); }, 1000);
+
+            }
+        }
+    }
+    tick();
 }
 //---------------------------------------------------------------------------
 //----------------------------Room Functions----------------------------------------------------------------------------------
 const foyer = () => {
 	$(".game-screen").attr('src', 'images/door2.jpg');
-	$(".description").text("You've entered the foyer of a large and spooky house.  The door slams shut behind you and you can hear the clicks of some sort of mechanism ticking away.  You realize you only have to survive until the door opens...  Before you lay a long hallway with doors on both sides.");
+	$(".description").text("For some inexplicable reason you've entered the foyer of a large and spooky house.  The door slams shut behind you and you can hear the clicks of some sort of mechanism ticking away.  You realize you only have to survive until the door opens...  Before you lay a long hallway with doors on both sides.");
 	//$(".sounds")[0].play();
+	if (counter === 0){
+		alert("You have won!  Retrieve your gift basket and seek lots of therapy!")
+	}
+
+}
+
+const returnFoyer = () => {
+	$(".game-screen").attr('src', 'images/door2.jpg');
+	$(".description").text("You pee your pants and run back to the foyer.  The monsters laugh at you.  They are all gonna laugh at you.");
+	$(".btn").remove();
+	$(".buttons").append("<button type='button' id='main-hall' class='btn btn-dark btn-lg btn-block'>Main Hall</button>");
+	$("#main-hall").on("click", () => {
+	mainHallway();
+	});
 
 }
 
 const mainHallway = () => {
 	$(".game-screen").attr('src', 'images/mainfloorhall.jpg');
-	$(".description").text("You step into a large hall, at the end of which is a grand staircase.  Before you can see any more, a hideous game.zombie shuffles up to you asking for loose change!");
+	$(".description").text("You step into a large hall, at the end of which is a grand staircase.  Before you can see any more, a hideous zombie shuffles up to you asking for loose change!");
 	$(".btn").remove();
 	$(".buttons").append("<button type='button' id='fight' class='btn btn-danger btn-lg btn-block'>Fight!</button>");
 	$(".buttons").append("<button type='button' id='run' class='btn btn-secondary btn-lg btn-block'>Run Away!</button>");
@@ -112,8 +157,9 @@ const mainHallway = () => {
 	
 	$("#fight").on("click", () => {
 	game.playerOne.attack();
-	randoPlayAttack();
+	game.playerOne.death();
 	game.zombie.attack();
+	game.zombie.death();
 	randoMonAttack();
 	console.log(game.playerOne);
 	console.log(game.zombie);
@@ -121,7 +167,7 @@ const mainHallway = () => {
 	
 	$("#run").on("click", () => {
 	console.log("Run away!!!")
-	foyer();
+	returnFoyer();
 	});
 	
 	$("#den").on("click", () => {
@@ -143,17 +189,18 @@ const den = () => {
 	game.zombieDog = new character(2, 1, 1);
 
 	$("#fight").on("click", () => {
-	console.log("Fight! Fight!")
 	game.playerOne.attack();
+	game.playerOne.death();
 	game.zombieDog.attack();
-
+	game.zombieDog.death();
+	randoMonAttack();
 	console.log(game.playerOne);
 	console.log(game.zombieDog);
 	});
 	
 	$("#run").on("click", () => {
 	console.log("Run away!!!")
-	foyer();
+	returnFoyer();
 	});
 
 	$("#main-hall").on("click", () => {
@@ -163,7 +210,7 @@ const den = () => {
 
 const lounge = () => {
 	$(".game-screen").attr('src', 'images/lounge.jpeg');
-	$(".description").text("You enter the lounge.  The haunting sounds of 50's era crooners fills the air with non-ironic din.")
+	$(".description").text("You enter the lounge.  The haunting sounds of 50's era crooners fills the air with non-ironic din.  A hipster yeti runs towards you shouting 'I heard them before they were cool!'")
 	$(".btn").remove();
 	$(".buttons").append("<button type='button' id='fight' class='btn btn-danger btn-lg btn-block'>Fight!</button>");
 	$(".buttons").append("<button type='button' id='run' class='btn btn-secondary btn-lg btn-block'>Run Away!</button>");
@@ -171,16 +218,18 @@ const lounge = () => {
 	game.yeti = new character(20, 10, 10);
 
 	$("#fight").on("click", () => {
-	console.log("Fight! Fight!")
 	game.playerOne.attack();
-	game.zombie.attack();
+	game.playerOne.death();
+	game.yeti.attack();
+	game.yeti.death();
+	randoMonAttack();
 	console.log(game.playerOne);
-	console.log(game.zombie);
+	console.log(game.yeti);
 	});
-	
+
 	$("#run").on("click", () => {
 	console.log("Run away!!!")
-	foyer();
+	returnFoyer();
 	$(".btn").remove();
 	});
 
@@ -192,6 +241,13 @@ const lounge = () => {
 
 
 });
+
+const endGame = () => {
+		$(".game-screen").attr('src', 'images/youDied.jpg');
+		$(".description").text(randoDeath);
+		$(".btn").remove();
+		$(".buttons").append("<button type='button' id='restart' class='btn btn-outline-danger'>Restart</button>");
+}
 //--------------------Timer function------------------------
 // let seconds = 0;
 
@@ -223,13 +279,13 @@ const randoDeath = () => {
 		
 
 
-const randoPlayAttack = () => {
+// const randoPlayAttack = () => {
 
-		let randoAttack = [Math.floor(Math.random()*playerAttackDesc.length)];
+// 		let randoAttack = [Math.floor(Math.random()*playerAttackDesc.length)];
 	
-			$(".description").text(playerAttackDesc[randoAttack]);
-	}
-		
+// 			$(".description").text(playerAttackDesc[randoAttack]);
+// 	}
+
 
 
 
@@ -241,8 +297,13 @@ const attackDescriptions = [
 "The monster insults you, and you realize life is a cyclical pattern of conflict with no end.  You begin to realize that to escape samsara you must rise above the prolific misery in the world and seek enlightenment. Your mind blossoms with understanding and then the monster stabs you.",
 "The monster summons the ghost of Redd Foxx who has a heart attack and falls on you.",
 "The monster slaps you so hard you start to cry.",
-"The monster belches and lights it's burp on fire, burning your eyes and lungs.  You are damaged by the sheer awesomness!"
-
+"The monster belches and lights it's burp on fire, burning your eyes and lungs.  You are damaged by the sheer awesomness!",
+"You kick the monster in the gnards.  Against all known monster lore, it seems to work!",
+"You suddenly point behind the monster, who turns around to look, proving that the oldest trick in the book is still in the book for a reason. The resulting stabbing you give it is glorious to behold.",
+"You stab the monster.  That's it.  No commentary.  No wildly funny and improbable thing happens.  Just the stabbing.",
+"The monster launches into a series of complicated judo maneuvers.  You politely wait for it to finish before shooting it.",
+"The monster appears to have bad comb-over and orange skin so you punch it.  Hard.",
+"You kick and flail at the monster somewhat successfully."
 ];
 
 const killDescriptions = [
@@ -255,15 +316,15 @@ const killDescriptions = [
 
 ];
 
-const playerAttackDesc = [
-"You kick the monster in the gnards.  Against all known monster lore, it seems to work!",
-"You suddenly point behind the monster, who turns around to look, proving that the oldest trick in the book is still in the book for a reason. The resulting stabbing you give it is glorious to behold.",
-"You stab the monster.  That's it.  No commentary.  No wildly funny and improbable thing happens.  Just the stabbing.",
-"The monster launches into a series of complicated judo maneuvers.  You politely wait for it to finish before shooting it.",
-"The monster appears to have bad comb-over and orange skin so you punch it.  Hard.",
-"You kick and flail at the monster somewhat successfully."
+// const playerAttackDesc = [
+// "You kick the monster in the gnards.  Against all known monster lore, it seems to work!",
+// "You suddenly point behind the monster, who turns around to look, proving that the oldest trick in the book is still in the book for a reason. The resulting stabbing you give it is glorious to behold.",
+// "You stab the monster.  That's it.  No commentary.  No wildly funny and improbable thing happens.  Just the stabbing.",
+// "The monster launches into a series of complicated judo maneuvers.  You politely wait for it to finish before shooting it.",
+// "The monster appears to have bad comb-over and orange skin so you punch it.  Hard.",
+// "You kick and flail at the monster somewhat successfully."
 
-];
+//];
 
 
 
