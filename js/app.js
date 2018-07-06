@@ -8,7 +8,7 @@ $(document).ready(function() {
 		$(".btn").replaceWith("<button type='button' id='main-hall' class='btn btn-dark btn-lg btn-block'>Main Hall</button>");
 		game.playerOne = new character(10, 2, 2);
 		foyer();
-		startTimer(1);
+		startTimer(5);
 
 	$("#fight").on("click", () => {
 		console.log("Fight! Fight!")
@@ -58,14 +58,17 @@ $(document).ready(function() {
 		death(){
 			if (game.playerOne.health <= 0){
 				endGame();
+			} if (game.zombie.health <= 0){
+				alert("You have killed the zombie!  Good for you!")			
 			}
 		}
 	}
+
 	//--------------------------------------------------------------------
 	//-------------------------------Health Bar---------------------------
 
 
-	//$('#health-bar').css("width", (playerChar.health * 10)+ "%");
+	//$('#health-bar').css("width", (game.playerChar.health * 10)- "%");
 
 
 	//--------------------------------------------------------------------
@@ -97,16 +100,16 @@ $(document).ready(function() {
 	//--------------------Timer function part deaux------------------------------
 	let seconds = 0;
 
-	const timePasses = () => {
+	const otherTimer = () => {
 
 		seconds++;
 			if(document.getElementById("survival-timer")===0){
 		return endGame();
 	}
-			clearInterval(timePassing);	
+			clearInterval(timePasses);	
 		}
 
-	const timePassing = setInterval(timePasses, 100);
+	const timePasses = setInterval(otherTimer, 100);
 	//---------------------------------------------------------------------------
 	//----------------------------Room Functions----------------------------------------------------------------------------------
 	const foyer = () => {
@@ -164,12 +167,12 @@ $(document).ready(function() {
 
 	const den = () => {
 		$(".game-screen").attr('src', 'images/den.jpg');
-		$(".description").text("You jump out of the dangrous hallway into what appears to be a den.  It looks nice... well, it looked nice at one point.  Before the monsters and blood.");
+		$(".description").text("You jump out of the dangrous hallway into what appears to be a den.  It looks nice... well, it looked nice at one point.  Before the monsters and blood.  There's a dog nearby, only... it's not really alive.");
 		$(".btn").remove();
 		$(".buttons").append("<button type='button' id='fight' class='btn btn-danger btn-lg btn-block'>Fight!</button>");
 		$(".buttons").append("<button type='button' id='run' class='btn btn-secondary btn-lg btn-block'>Run Away!</button>");
 		$(".buttons").append("<button type='button' id='main-hall' class='btn btn-light btn-lg btn-block'>Main Hall</button>");
-		game.zombieDog = new character(2, 1, 1);
+		game.zombieDog = new character(2, 1, 3);
 
 		$("#fight").on("click", () => {
 		game.playerOne.attack();
@@ -194,7 +197,7 @@ $(document).ready(function() {
 
 	const lounge = () => {
 		$(".game-screen").attr('src', 'images/lounge.jpeg');
-		$(".description").text("You enter the lounge.  The haunting sounds of 50's era crooners fills the air with non-ironic din.  A hipster yeti runs towards you shouting 'I heard them before they were cool!'")
+		$(".description").text("You enter the lounge.  The haunting sounds of 50's era crooners fills the air with non-ironic din.  A hipster Yeti runs towards you shouting 'I was listening to them before they were cool!'")
 		$(".btn").remove();
 		$(".buttons").append("<button type='button' id='fight' class='btn btn-danger btn-lg btn-block'>Fight!</button>");
 		$(".buttons").append("<button type='button' id='run' class='btn btn-secondary btn-lg btn-block'>Run Away!</button>");
@@ -285,9 +288,10 @@ $(document).ready(function() {
 	"You die of dysentary.  Because even though you aren't even on the Oregon Trail, it can still kill you.",
 	"The monster moves towards you with slavering jaws ready to chew your face off and you are comforted in the knowledge that your imminent death is better than the Orwellian horror that awaits you outside, should you have managed to successfully escape.  (Oooh! sick contemporary political commentary!)",
 	"You curl up into a ball and let entropy take you.",
-	"You begin to feel like you are getting a handle on 'adulting' but quickly realize it's not a real thing and die from sheer, explosive ennui",
+	"You begin to feel like you are getting a handle on 'adulting' but quickly realize it's not a real thing and die from sheer, explosive ennui.",
 	"The years of time spent in front of a screen, playing video games, have ill-prepared you for the reality of true horror cliche. You are slowly tea-bagged to death by testicle monster while desperately trying to spam the attack button.",
-	"You start to feel the crushing weight of defeat, but suddenly remember that poster with the kitten hanging on to a string.  You steel yourself to handle anything the mansion could throw at you but are quickly torn to pieces by the incessant, self-esteem shattering taunts and stabbings"
+	"You start to feel the crushing weight of defeat, but suddenly remember that poster with the kitten hanging on a string.  You steel yourself to handle anything the mansion could throw at you but are quickly torn to pieces by the incessant, self-esteem shattering taunts and stabbings",
+	"You feel the claws and sharp bits of metal of your enemies surrounding you.  Suddenly there's a light at the end of a long tunnel.  Oh, wait...."
 
 	];
 

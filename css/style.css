@@ -30,7 +30,7 @@ body {
 }
 .description {
 	text-align: center;
-	font-family: 'Nosifer', cursive;
+	font-family: 'Mystery Quest', cursive;
 	color: white;
 }
 .progress {
@@ -82,11 +82,11 @@ footer {
 	font-size: xx-small;
 	color: white;
 }
-h1 {
+.title {
 	font-family: 'Creepster', cursive;
-	text-shadow: : 2px 2px rgb(114,7,7,0.5);
 	color: white;
 	text-align: center;
+	text-shadow: : 2px 2px 8px #FF0000;
 }
 .timer-clock {
 	width: 15%;
